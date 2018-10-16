@@ -8,12 +8,21 @@ using namespace backend;
 using namespace images;
 
 
-
+std::vector<std::vector<uint8_t>> coin_image = {
+	{ 0,0,8,8,8,8,0,0 },
+	{ 0,8,7,7,7,7,8,0 },
+	{ 0,8,7,7,7,7,8,0 },
+	{ 0,8,7,7,7,7,8,0 },
+	{ 0,8,7,7,7,7,8,0 },
+	{ 0,8,7,7,7,7,8,0 },
+	{ 0,8,7,7,7,7,8,0 },
+	{ 0,0,8,8,8,8,0,0 }
+};
 
 player p = player(newTypes::vec2(100, 100),
 	.1f,
 	100,
-	10,
+	16,
 	0,
 	1,
 	.2f);
@@ -37,6 +46,19 @@ image sample = image(newTypes::vec2(120, 120), 16
 	{ 0,0,6,6,6,6,0,0,0,6,6,6,6,0,0,0 },
 	{ 0,6,6,6,6,6,0,0,0,6,6,6,6,6,0,0 } });
 
+image coin = image(newTypes::vec2(100, 100), 8, coin_image);
+
+olc::Pixel color_pallet[256] = {
+	olc::BLACK,
+	olc::WHITE,
+	olc::RED,
+	olc::BLUE,
+	olc::GREEN,
+	olc::Pixel(210, 180, 140),
+	olc::Pixel(150, 75, 0),
+	olc::Pixel(255, 201, 14),
+	olc::Pixel(255, 242, 0)
+};
 
 
 
@@ -66,9 +88,9 @@ public:
 
 	olc::Pixel ColorRet(uint8_t val)
 	{
-		olc::Pixel color = olc::BLACK;
+		olc::Pixel color = color_pallet[val];
 
-		switch (val)
+		/*switch (val)
 		{
 			case 1: 
 				color = olc::WHITE;
@@ -88,9 +110,14 @@ public:
 			case 6:
 				color = olc::Pixel(150, 75, 0);
 				break;
+			case 7:
+				color = olc::Pixel(255, 201, 14);
+				break;
+			case 8:
+				color = olc::Pixel(255, 242, 0);
 
 
-		}
+		}*/
 		return color;
 	}
 
@@ -100,14 +127,14 @@ public:
 		if (GetKey(olc::LEFT).bHeld | GetKey(olc::A).bHeld && p.left() >= 0)				
 		{ 
 			p.MoveLeft();
-			sample.Pos.x -= .1;
+			//sample.Pos.x -= .1;
 		}
 			
 			// Move Right if D or rigth is held down and when the player is on the screen
 		if (GetKey(olc::RIGHT).bHeld | GetKey(olc::D).bHeld && p.right() <= ScreenWidth())	
 		{ 
 			p.MoveRight(); 
-			sample.Pos.x += .1;
+			//sample.Pos.x += .1;
 		}
 		
 			// Move Up if W or up is held down and when the player is on the screen
@@ -123,14 +150,22 @@ public:
 	void draw()
 	{
 		Clear(olc::Pixel(0, 0, 0));
-		FillRect(int(p.center.x - (p.size / 2)), int(p.center.y - (p.size / 2)),
-			p.size, p.size, olc::RED);
+		/*FillRect(int(p.center.x - (p.size / 2)), int(p.center.y - (p.size / 2)),
+			p.size, p.size, olc::RED);*/
+		sample.Pos = p.center;
+		sample.Pos.x -= 8;
+		sample.Pos.y -= 10;
+
 		for (int x = sample.Pos.x; x < sample.Pos.x + sample.size; x++)
 			for (int y = sample.Pos.y; y < sample.Pos.y + sample.size; y++)
 			{
 				Draw(x, y, ColorRet(sample.data[y- sample.Pos.y][x - sample.Pos.x]));
 			}
-
+		for (int x = coin.Pos.x; x < coin.Pos.x + coin.size; x++)
+			for (int y = coin.Pos.y; y < coin.Pos.y + coin.size; y++)
+			{
+				Draw(x, y, ColorRet(coin.data[y - coin.Pos.y][x - coin.Pos.x]));
+			}
 
 	}
 	
