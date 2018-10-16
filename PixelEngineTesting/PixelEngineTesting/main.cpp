@@ -19,7 +19,7 @@ std::vector<std::vector<uint8_t>> coin_image = {
 	{ 0,0,8,8,8,8,0,0 }
 };
 
-player p = player(newTypes::vec2(100, 100),
+player p = player(newTypes::vec2(20, 180),
 	.1f,
 	100,
 	16,
@@ -36,33 +36,32 @@ image sample = image(newTypes::vec2(120, 120), 16
 	{ 0,0,6,6,5,6,6,5,5,5,6,5,5,5,0,0 },
 	{ 0,0,6,6,6,5,5,5,5,6,6,6,6,0,0,0 },
 	{ 0,0,0,0,5,5,5,5,5,5,5,5,0,0,0,0 },
-	{ 0,0,0,6,6,6,3,6,6,6,0,0,0,0,0,0 },
-	{ 0,0,6,6,6,6,3,6,6,3,6,6,6,0,0,0 },
-	{ 0,6,6,6,6,6,3,6,6,3,6,6,6,6,0,0 },
-	{ 0,5,5,5,6,3,5,3,3,5,3,6,5,5,0,0 },
-	{ 0,5,5,5,5,3,3,3,3,3,3,5,5,5,0,0 },
-	{ 0,5,5,5,3,3,3,3,3,3,3,3,5,5,0,0 },
-	{ 0,0,0,3,3,3,3,0,3,3,3,3,0,0,0,0 },
+	{ 0,0,0,6,6,6,2,6,6,6,0,0,0,0,0,0 },
+	{ 0,0,6,6,6,6,2,6,6,2,6,6,6,0,0,0 },
+	{ 0,6,6,6,6,6,2,6,6,2,6,6,6,6,0,0 },
+	{ 0,5,5,5,6,2,5,2,2,5,2,6,5,5,0,0 },
+	{ 0,5,5,5,5,2,2,2,2,2,2,5,5,5,0,0 },
+	{ 0,5,5,5,2,2,2,2,2,2,2,2,5,5,0,0 },
+	{ 0,0,0,2,2,2,2,0,2,2,2,2,0,0,0,0 },
 	{ 0,0,6,6,6,6,0,0,0,6,6,6,6,0,0,0 },
-	{ 0,6,6,6,6,6,0,0,0,6,6,6,6,6,0,0 } });
+	{ 0,6,6,6,6,6,0,0,0,6,6,6,6,6,0,0 }
+});
 
 image coin = image(newTypes::vec2(100, 100), 8, coin_image);
 
-olc::Pixel color_pallet[256] = {
+olc::Pixel color_pallet[14] = {
 	olc::BLACK,
 	olc::WHITE,
 	olc::RED,
 	olc::BLUE,
 	olc::GREEN,
 	olc::Pixel(210, 180, 140),
-	olc::Pixel(150, 75, 0),
-	olc::Pixel(255, 201, 14),
-	olc::Pixel(255, 242, 0)
+	olc::Pixel(150, 75,	 0	),
+	olc::Pixel(255, 201, 14	),
+	olc::Pixel(255, 242, 0	)
 };
 
 
-
-//int timer = 0;
 class Example : public olc::PixelGameEngine
 {
 public:
@@ -88,36 +87,8 @@ public:
 
 	olc::Pixel ColorRet(uint8_t val)
 	{
+			//Indexes the color from the palette array made earlier. Quicker and simpler than using a case statement.
 		olc::Pixel color = color_pallet[val];
-
-		/*switch (val)
-		{
-			case 1: 
-				color = olc::WHITE;
-				break;
-			case 2:
-				color = olc::RED;
-				break;
-			case 3:
-				color = olc::BLUE;
-				break;
-			case 4:
-				color = olc::GREEN;
-				break;
-			case 5:
-				color = olc::Pixel(210, 180, 140);
-				break;
-			case 6:
-				color = olc::Pixel(150, 75, 0);
-				break;
-			case 7:
-				color = olc::Pixel(255, 201, 14);
-				break;
-			case 8:
-				color = olc::Pixel(255, 242, 0);
-
-
-		}*/
 		return color;
 	}
 
@@ -147,16 +118,26 @@ public:
 
 	}
 	
+	void drawNewSprite(image img)
+	{
+		for (int x = img.Pos.x; x < img.Pos.x + img.size; x++)
+			for (int y = img.Pos.y; y < img.Pos.y + img.size; y++)
+			{
+				Draw(x, y, ColorRet(img.data[y - img.Pos.y][x - img.Pos.x]));
+			}
+	}
 	void draw()
 	{
 		Clear(olc::Pixel(0, 0, 0));
-		/*FillRect(int(p.center.x - (p.size / 2)), int(p.center.y - (p.size / 2)),
-			p.size, p.size, olc::RED);*/
+
 		sample.Pos = p.center;
 		sample.Pos.x -= 8;
 		sample.Pos.y -= 10;
 
-		for (int x = sample.Pos.x; x < sample.Pos.x + sample.size; x++)
+		drawNewSprite(sample);
+		drawNewSprite(coin);
+
+		/*for (int x = sample.Pos.x; x < sample.Pos.x + sample.size; x++)
 			for (int y = sample.Pos.y; y < sample.Pos.y + sample.size; y++)
 			{
 				Draw(x, y, ColorRet(sample.data[y- sample.Pos.y][x - sample.Pos.x]));
@@ -165,7 +146,7 @@ public:
 			for (int y = coin.Pos.y; y < coin.Pos.y + coin.size; y++)
 			{
 				Draw(x, y, ColorRet(coin.data[y - coin.Pos.y][x - coin.Pos.x]));
-			}
+			}*/
 
 	}
 	

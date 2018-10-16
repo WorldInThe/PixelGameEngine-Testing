@@ -14,6 +14,8 @@ namespace images
 		newTypes::vec2 Pos;
 		uint8_t size;
 		std::vector<std::vector<uint8_t>> data;
+		
+	
 	};
 	/*class image_16
 	{
