@@ -1,5 +1,3 @@
-//#include "olcPixelGameEngine.h"
-//#include "Player.h"
 #include "images.h"
 #include <math.h>
 #include <time.h>
@@ -126,6 +124,7 @@ public:
 				Draw(x, y, ColorRet(img.data[y - img.Pos.y][x - img.Pos.x]));
 			}
 	}
+	
 	void draw()
 	{
 		Clear(olc::Pixel(0, 0, 0));
@@ -136,17 +135,6 @@ public:
 
 		drawNewSprite(sample);
 		drawNewSprite(coin);
-
-		/*for (int x = sample.Pos.x; x < sample.Pos.x + sample.size; x++)
-			for (int y = sample.Pos.y; y < sample.Pos.y + sample.size; y++)
-			{
-				Draw(x, y, ColorRet(sample.data[y- sample.Pos.y][x - sample.Pos.x]));
-			}
-		for (int x = coin.Pos.x; x < coin.Pos.x + coin.size; x++)
-			for (int y = coin.Pos.y; y < coin.Pos.y + coin.size; y++)
-			{
-				Draw(x, y, ColorRet(coin.data[y - coin.Pos.y][x - coin.Pos.x]));
-			}*/
 
 	}
 	
